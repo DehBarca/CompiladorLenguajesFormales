@@ -1,28 +1,15 @@
 r"""
-Analizador sintáctico (parser) usando PLY para una versión reducida de JSON.
+Este módulo usa PLY (y el lexer definido en `src/lexer.py`) para definir
+una gramática libre de contexto (GLC) que reconoce objetos JSON simples
+compuestos por pares `"clave": valor` donde `valor` puede ser cadena,
+número entero o a su vez un objeto. Tras parsear, el módulo realiza una
+validación semántica específica para el esquema requerido por la práctica
+(campos `folio`, `fecha_toma`, `paciente`, ...).
 
-Este parser construye un diccionario Python a partir de un objeto JSON reducido
-y luego ejecuta una validación semántica para asegurar la presencia y tipo de
-los campos requeridos:
-
-Estructura esperada (ejemplo):
-{
-  "folio": 15502427,
-  "fecha_toma": "14/06/2020 07:51:57",
-  "fecha_validacion": "14/06/2020 17:08:05",
-  "paciente": {
-    "nombre": "Ramírez Guzmán, María",
-    "fecha_nacimiento": "25/04/1985",
-    "sexo": "F",
-    "edad": 35
-  }
-}
-
-Funciones exportadas:
-- parse_text(text): devuelve (data, None) si parse y validación OK, o (None, mensaje_error).
-- build_parser(): construye el parser PLY.
-
-Comentarios en español explican las reglas sintácticas definidas.
+Funciones principales exportadas:
+- `parse_text(text)`: parsea el texto y devuelve `(data, None)` si es válido
+    o `(None, mensaje_error)` si hay fallo de sintaxis/validación.
+- `build_parser()`: construye el parser PLY (útil para pruebas o uso directo).
 """
 
 import re
@@ -32,43 +19,79 @@ from lexer import tokens, build_lexer
 # ------ Reglas de la gramática (sintaxis) ------
 
 def p_start(t):
+    """Producción inicial.
+
+    start -> object
+    Devuelve directamente el objeto parseado como diccionario.
+    """
     'start : object'
     t[0] = t[1]
 
 def p_object_empty(t):
+    """Objeto vacío.
+
+    object -> { }
+    Se mapea a un diccionario vacío.
+    """
     'object : LBRACE RBRACE'
     t[0] = {}
 
 def p_object_members(t):
+    """Objeto con miembros (pares clave-valor).
+
+    object -> { members }
+    `members` se construye como una lista de tuplas (clave, valor),
+    por eso se convierte a `dict` para obtener un mapeo Python.
+    """
     'object : LBRACE members RBRACE'
     # members es una lista de pares (clave, valor)
     t[0] = dict(t[2])
 
 def p_members_single(t):
+    """Lista de miembros con un único par."""
     'members : pair'
     t[0] = [t[1]]
 
 def p_members_multiple(t):
+    """Lista de miembros extendida por coma.
+
+    Permite construir una lista acumulativa de pares.
+    """
     'members : members COMMA pair'
     t[0] = t[1] + [t[3]]
 
 def p_pair(t):
+    """Par clave-valor.
+
+    pair -> STRING : value
+    Retorna una tupla (clave, valor) que luego se usará para construir
+    el diccionario del objeto.
+    """
     'pair : STRING COLON value'
     t[0] = (t[1], t[3])
 
 def p_value_string(t):
+    """Valor tipo cadena."""
     'value : STRING'
     t[0] = t[1]
 
 def p_value_number(t):
+    """Valor tipo número entero."""
     'value : NUMBER'
     t[0] = t[1]
 
 def p_value_object(t):
+    """Valor que es a su vez un objeto (anidamiento)."""
     'value : object'
     t[0] = t[1]
 
 def p_error(t):
+    """Manejador de errores sintácticos del parser.
+
+    - Si `t` es `None`, significa que la entrada terminó inesperadamente.
+    - En caso contrario se informa el token que causó el fallo.
+    PLY llamará a esta función en caso de error durante el parseo.
+    """
     if t is None:
         raise SyntaxError('Error de sintaxis: fin de entrada inesperado')
     else:
@@ -76,9 +99,14 @@ def p_error(t):
 
 
 def build_parser(**kwargs):
-    r"""Construye y devuelve el parser PLY."""
-    import sys
-    return yacc.yacc(module=sys.modules[__name__], **kwargs)
+        r"""Construye y devuelve el parser PLY.
+
+        - Se delega en `yacc.yacc` pasando el módulo actual para que PLY
+            identifique las funciones `p_*` definidas aquí.
+        - `kwargs` permite opciones como `debug` u `optimize`.
+        """
+        import sys
+        return yacc.yacc(module=sys.modules[__name__], **kwargs)
 
 
 # ------ Validación semántica de la estructura específica ------
@@ -87,9 +115,15 @@ date_time_re = re.compile(r'^\d{2}/\d{2}/\d{4} \d{2}:\d{2}:\d{2}$')
 date_re = re.compile(r'^\d{2}/\d{2}/\d{4}$')
 
 def validate_structure(data):
-    r"""Valida que el dict `data` cumpla con la estructura requerida.
+    r"""Validación semántica del esquema.
 
-    Devuelve (True, None) si OK o (False, mensaje_error) en caso contrario.
+    Comprueba que el resultado del parseo contenga los campos
+    obligatorios y que tengan el tipo/formato esperado. Esta
+    validación es específica del ejercicio y no forma parte de la
+    gramática.
+
+    Devuelve `(True, None)` si la estructura es correcta, o
+    `(False, mensaje_error)` con una explicación en caso contrario.
     """
     if not isinstance(data, dict):
         return False, 'La raíz no es un objeto JSON'
@@ -131,9 +165,12 @@ def validate_structure(data):
 
 
 def parse_text(text):
-    r"""Parsea `text` y valida la estructura.
+    r"""Función de alto nivel para parsear y validar texto JSON.
 
-    Devuelve (data, None) si OK, o (None, mensaje_error) en caso de falla.
+    - Construye el lexer y parser, ejecuta el análisis sintáctico
+      y luego la validación semántica.
+    - Retorna `(data, None)` si todo es correcto o `(None, mensaje)`
+      cuando ocurre un error.
     """
     lexer = build_lexer()
     parser = build_parser()

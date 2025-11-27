@@ -1,19 +1,19 @@
 r"""
-Analizador léxico (lexer) para una versión reducida de JSON usando PLY.
+Este módulo define las reglas léxicas (tokens) utilizadas por el parser
+en `src/parser.py`. Está intencionado para tokenizar únicamente el
+subconjunto de JSON que usamos en la práctica (objetos, cadenas y números
+enteros). No implementa booleanos, null ni arrays completos.
 
-Reglas léxicas en este archivo:
-- Llaves: `{` y `}` (tokens LBRACE y RBRACE)
-- Dos puntos: `:` (token COLON)
-- Coma: `,` (token COMMA)
-- Cadenas: secuencias entre comillas dobles `"..."` (token STRING)
-- Números enteros: secuencias de dígitos (token NUMBER)
+Tokens soportados:
+- `LBRACE` / `RBRACE`: llaves izquierda/derecha `{` `}`
+- `COLON`: `:`
+- `COMMA`: `,`
+- `STRING`: cadena entre comillas dobles (soporta escapes básicos `\n`, `\t`, `\\", "\\`)
+- `NUMBER`: números enteros (se convierten a `int`)
 
-La función `build_lexer()` construye y devuelve el lexer (objeto PLY).
-
-El token `STRING` devuelve el contenido sin las comillas ni las secuencias de escape
-convertidas (se usa `unicode_escape` para interpretar escapes como \n, \uXXXX, etc.).
-
-Diseñado para ser simple y centrado en validar la estructura JSON del enunciado.
+La función `build_lexer()` construye y devuelve el lexer de PLY para
+ser usado por el parser. El módulo también incluye un pequeño modo de
+prueba cuando se ejecuta como script.
 """
 
 import re
@@ -29,40 +29,66 @@ tokens = (
     'NUMBER',
 )
 
-# Reglas simples para llaves, dos puntos y coma
+# Reglas simples (expresiones regulares) para símbolos literales.
+# Cada nombre `t_<NAME>` define el patrón para el token <NAME>.
 t_LBRACE = r'\{'
 t_RBRACE = r'\}'
 t_COLON = r':'
 t_COMMA = r','
 
-# Ignorar espacios en blanco y tabulaciones
+# Ignorar espacios en blanco y saltos de línea.
+# PLY automáticamente omite estos caracteres al tokenizar.
 t_ignore = ' \t\r\n'
 
 def t_STRING(t):
-    r'"([^"\\]|\\.)*"'
-    # Remueve las comillas y maneja escapes básicos
-    s = t.value[1:-1]
-    # Procesar solo escapes comunes de JSON sin afectar UTF-8
-    s = s.replace('\\n', '\n')
-    s = s.replace('\\t', '\t')
-    s = s.replace('\\r', '\r')
-    s = s.replace('\\"', '"')
-    s = s.replace('\\\\', '\\')
-    t.value = s
-    return t
+        r'"([^"\\]|\\.)*"'
+        """Procesa literales de cadena JSON.
+
+        - El token reconoce cualquier secuencia entre comillas dobles,
+            incluyendo escapes (`\"`, `\\`, `\n`, ...).
+        - Se devuelve `t.value` sin las comillas exteriores y con los
+            escapes básicos reemplazados.
+        - No se intenta una decodificación amplia de `\uXXXX`; esto
+            mantiene intactos los caracteres UTF-8 (acentos, ñ, etc.).
+        """
+        # Remueve las comillas alrededor del literal
+        s = t.value[1:-1]
+        # Reemplazos simples para manejar escapes comunes en JSON
+        s = s.replace('\\n', '\n')
+        s = s.replace('\\t', '\t')
+        s = s.replace('\\r', '\r')
+        s = s.replace('\\"', '"')
+        s = s.replace('\\\\', '\\')
+        t.value = s
+        return t
 
 def t_NUMBER(t):
     r'\d+'
+    """Reconoce números enteros consecutivos.
+
+    Convierte el valor de texto a `int` para que el parser trabaje
+    con tipos numéricos directamente.
+    """
     t.value = int(t.value)
     return t
 
 def t_error(t):
-    # Al encontrar un carácter inválido, informar el error y avanzar
+    """Manejador de errores léxicos.
+
+    Se ejecuta cuando no existe ningún token que coincida con el
+    carácter actual. Muestra un mensaje y avanza un carácter para
+    intentar continuar el análisis.
+    """
     print(f"Caracter inválido en entrada: '{t.value[0]}' (en posición {t.lexpos})")
     t.lexer.skip(1)
 
 def build_lexer(**kwargs):
     r"""Construye y devuelve el lexer PLY.
+
+    - Devuelve un objeto lexer configurado con las reglas definidas en
+      este módulo. Se pasa `module=sys.modules[__name__]` a `lex.lex`
+      para que PLY encuentre las funciones `t_*` aquí definidas.
+    - `kwargs` permite pasar opciones de PLY como `optimize=True`.
 
     Uso:
         lexer = build_lexer()
