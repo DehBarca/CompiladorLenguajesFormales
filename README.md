@@ -260,4 +260,5 @@ CompiladorLenguajesFormales/
 
 ## 👥 Autores
 
-Barraza C. Diego A.
+- Barraza C. Diego A.
+- Romo M. Diego
