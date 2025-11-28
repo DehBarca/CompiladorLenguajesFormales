@@ -262,3 +262,5 @@ CompiladorLenguajesFormales/
 
 - Barraza C. Diego A.
 - Romo M. Diego
+- Portillo M. Pablo
+- Caballero V. Renata I.
