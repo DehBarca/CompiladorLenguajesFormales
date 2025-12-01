@@ -1,0 +1,19 @@
+{
+  "folio": 15502430,
+  "fecha_toma": "17/06/2020 10:00:00",
+  "fecha_validacion": "17/06/2020 20:00:00",
+  "paciente": {
+    "nombre": "Martinez Perez, Carlos",
+    "fecha_nacimiento": "15/02/1992",
+    "sexo": "M",
+    "edad": 28
+  },
+  "seccion": "Biometria Hematica",
+  "parametros": [
+    {"nombre": "Leucocitos", "resultado": 7.8, "unidad": "10^3/uL", "limite": "[4.5 - 10.0]"}
+  ],
+  "firma": {
+    "responsable": "Q.F.B. Maria Lopez",
+    "cedula": "11223344"
+  }
+}

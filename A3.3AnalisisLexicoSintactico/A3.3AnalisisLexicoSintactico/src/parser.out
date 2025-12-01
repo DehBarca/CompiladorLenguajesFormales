@@ -1,0 +1,298 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> start
+Rule 1     start -> object
+Rule 2     object -> LBRACE RBRACE
+Rule 3     object -> LBRACE members RBRACE
+Rule 4     members -> pair
+Rule 5     members -> members COMMA pair
+Rule 6     pair -> STRING COLON value
+Rule 7     value -> STRING
+Rule 8     value -> NUMBER
+Rule 9     value -> object
+Rule 10    value -> array
+Rule 11    array -> LBRACKET RBRACKET
+Rule 12    array -> LBRACKET elements RBRACKET
+Rule 13    elements -> value
+Rule 14    elements -> elements COMMA value
+
+Terminals, with rules where they appear
+
+COLON                : 6
+COMMA                : 5 14
+LBRACE               : 2 3
+LBRACKET             : 11 12
+NUMBER               : 8
+RBRACE               : 2 3
+RBRACKET             : 11 12
+STRING               : 6 7
+error                : 
+
+Nonterminals, with rules where they appear
+
+array                : 10
+elements             : 12 14
+members              : 3 5
+object               : 1 9
+pair                 : 4 5
+start                : 0
+value                : 6 13 14
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . start
+    (1) start -> . object
+    (2) object -> . LBRACE RBRACE
+    (3) object -> . LBRACE members RBRACE
+
+    LBRACE          shift and go to state 3
+
+    start                          shift and go to state 1
+    object                         shift and go to state 2
+
+state 1
+
+    (0) S' -> start .
+
+
+
+state 2
+
+    (1) start -> object .
+
+    $end            reduce using rule 1 (start -> object .)
+
+
+state 3
+
+    (2) object -> LBRACE . RBRACE
+    (3) object -> LBRACE . members RBRACE
+    (4) members -> . pair
+    (5) members -> . members COMMA pair
+    (6) pair -> . STRING COLON value
+
+    RBRACE          shift and go to state 4
+    STRING          shift and go to state 7
+
+    members                        shift and go to state 5
+    pair                           shift and go to state 6
+
+state 4
+
+    (2) object -> LBRACE RBRACE .
+
+    $end            reduce using rule 2 (object -> LBRACE RBRACE .)
+    RBRACE          reduce using rule 2 (object -> LBRACE RBRACE .)
+    COMMA           reduce using rule 2 (object -> LBRACE RBRACE .)
+    RBRACKET        reduce using rule 2 (object -> LBRACE RBRACE .)
+
+
+state 5
+
+    (3) object -> LBRACE members . RBRACE
+    (5) members -> members . COMMA pair
+
+    RBRACE          shift and go to state 8
+    COMMA           shift and go to state 9
+
+
+state 6
+
+    (4) members -> pair .
+
+    RBRACE          reduce using rule 4 (members -> pair .)
+    COMMA           reduce using rule 4 (members -> pair .)
+
+
+state 7
+
+    (6) pair -> STRING . COLON value
+
+    COLON           shift and go to state 10
+
+
+state 8
+
+    (3) object -> LBRACE members RBRACE .
+
+    $end            reduce using rule 3 (object -> LBRACE members RBRACE .)
+    RBRACE          reduce using rule 3 (object -> LBRACE members RBRACE .)
+    COMMA           reduce using rule 3 (object -> LBRACE members RBRACE .)
+    RBRACKET        reduce using rule 3 (object -> LBRACE members RBRACE .)
+
+
+state 9
+
+    (5) members -> members COMMA . pair
+    (6) pair -> . STRING COLON value
+
+    STRING          shift and go to state 7
+
+    pair                           shift and go to state 11
+
+state 10
+
+    (6) pair -> STRING COLON . value
+    (7) value -> . STRING
+    (8) value -> . NUMBER
+    (9) value -> . object
+    (10) value -> . array
+    (2) object -> . LBRACE RBRACE
+    (3) object -> . LBRACE members RBRACE
+    (11) array -> . LBRACKET RBRACKET
+    (12) array -> . LBRACKET elements RBRACKET
+
+    STRING          shift and go to state 12
+    NUMBER          shift and go to state 14
+    LBRACE          shift and go to state 3
+    LBRACKET        shift and go to state 17
+
+    value                          shift and go to state 13
+    object                         shift and go to state 15
+    array                          shift and go to state 16
+
+state 11
+
+    (5) members -> members COMMA pair .
+
+    RBRACE          reduce using rule 5 (members -> members COMMA pair .)
+    COMMA           reduce using rule 5 (members -> members COMMA pair .)
+
+
+state 12
+
+    (7) value -> STRING .
+
+    RBRACE          reduce using rule 7 (value -> STRING .)
+    COMMA           reduce using rule 7 (value -> STRING .)
+    RBRACKET        reduce using rule 7 (value -> STRING .)
+
+
+state 13
+
+    (6) pair -> STRING COLON value .
+
+    RBRACE          reduce using rule 6 (pair -> STRING COLON value .)
+    COMMA           reduce using rule 6 (pair -> STRING COLON value .)
+
+
+state 14
+
+    (8) value -> NUMBER .
+
+    RBRACE          reduce using rule 8 (value -> NUMBER .)
+    COMMA           reduce using rule 8 (value -> NUMBER .)
+    RBRACKET        reduce using rule 8 (value -> NUMBER .)
+
+
+state 15
+
+    (9) value -> object .
+
+    RBRACE          reduce using rule 9 (value -> object .)
+    COMMA           reduce using rule 9 (value -> object .)
+    RBRACKET        reduce using rule 9 (value -> object .)
+
+
+state 16
+
+    (10) value -> array .
+
+    RBRACE          reduce using rule 10 (value -> array .)
+    COMMA           reduce using rule 10 (value -> array .)
+    RBRACKET        reduce using rule 10 (value -> array .)
+
+
+state 17
+
+    (11) array -> LBRACKET . RBRACKET
+    (12) array -> LBRACKET . elements RBRACKET
+    (13) elements -> . value
+    (14) elements -> . elements COMMA value
+    (7) value -> . STRING
+    (8) value -> . NUMBER
+    (9) value -> . object
+    (10) value -> . array
+    (2) object -> . LBRACE RBRACE
+    (3) object -> . LBRACE members RBRACE
+    (11) array -> . LBRACKET RBRACKET
+    (12) array -> . LBRACKET elements RBRACKET
+
+    RBRACKET        shift and go to state 18
+    STRING          shift and go to state 12
+    NUMBER          shift and go to state 14
+    LBRACE          shift and go to state 3
+    LBRACKET        shift and go to state 17
+
+    elements                       shift and go to state 19
+    value                          shift and go to state 20
+    object                         shift and go to state 15
+    array                          shift and go to state 16
+
+state 18
+
+    (11) array -> LBRACKET RBRACKET .
+
+    RBRACE          reduce using rule 11 (array -> LBRACKET RBRACKET .)
+    COMMA           reduce using rule 11 (array -> LBRACKET RBRACKET .)
+    RBRACKET        reduce using rule 11 (array -> LBRACKET RBRACKET .)
+
+
+state 19
+
+    (12) array -> LBRACKET elements . RBRACKET
+    (14) elements -> elements . COMMA value
+
+    RBRACKET        shift and go to state 21
+    COMMA           shift and go to state 22
+
+
+state 20
+
+    (13) elements -> value .
+
+    RBRACKET        reduce using rule 13 (elements -> value .)
+    COMMA           reduce using rule 13 (elements -> value .)
+
+
+state 21
+
+    (12) array -> LBRACKET elements RBRACKET .
+
+    RBRACE          reduce using rule 12 (array -> LBRACKET elements RBRACKET .)
+    COMMA           reduce using rule 12 (array -> LBRACKET elements RBRACKET .)
+    RBRACKET        reduce using rule 12 (array -> LBRACKET elements RBRACKET .)
+
+
+state 22
+
+    (14) elements -> elements COMMA . value
+    (7) value -> . STRING
+    (8) value -> . NUMBER
+    (9) value -> . object
+    (10) value -> . array
+    (2) object -> . LBRACE RBRACE
+    (3) object -> . LBRACE members RBRACE
+    (11) array -> . LBRACKET RBRACKET
+    (12) array -> . LBRACKET elements RBRACKET
+
+    STRING          shift and go to state 12
+    NUMBER          shift and go to state 14
+    LBRACE          shift and go to state 3
+    LBRACKET        shift and go to state 17
+
+    value                          shift and go to state 23
+    object                         shift and go to state 15
+    array                          shift and go to state 16
+
+state 23
+
+    (14) elements -> elements COMMA value .
+
+    RBRACKET        reduce using rule 14 (elements -> elements COMMA value .)
+    COMMA           reduce using rule 14 (elements -> elements COMMA value .)
+

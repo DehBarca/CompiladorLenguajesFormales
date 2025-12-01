@@ -1,0 +1,36 @@
+{
+  "folio": 15502429,
+  "fecha_toma": "16/06/2020 09:45:00",
+  "fecha_validacion": "16/06/2020 19:30:00",
+  "paciente": {
+    "nombre": "Garcia Hernandez, Laura",
+    "fecha_nacimiento": "22/07/1988",
+    "sexo": "F",
+    "edad": 32
+  },
+  "seccion": "Biometria Hematica",
+  "parametros": [
+    {
+      "nombre": "Leucocitos",
+      "resultado": 6.5,
+      "unidad": "10^3/uL",
+      "limite": "[4.5 a 10.0]"
+    },
+    {
+      "nombre": "Eritrocitos",
+      "resultado": 4.5,
+      "unidad": "10^6/uL",
+      "limite": "[4.3-5.8]"
+    },
+    {
+      "nombre": "Hemoglobina",
+      "resultado": 13.8,
+      "unidad": "g/dL",
+      "limite": "[12.0 - 16.0]"
+    }
+  ],
+  "firma": {
+    "responsable": "Q.F.B. Roberto Sanchez Cruz",
+    "cedula": "876543"
+  }
+}

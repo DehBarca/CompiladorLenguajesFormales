@@ -1,0 +1,22 @@
+{
+  "folio": 15502428,
+  "fecha_toma": "15/06/2020 08:30:00",
+  "fecha_validacion": "15/06/2020 18:15:00",
+  "paciente": {
+    "nombre": "Lopez Martinez, Juan",
+    "fecha_nacimiento": "10/03/1990",
+    "sexo": "M",
+    "edad": 30
+  },
+  "medico_solicitante": "Dra. Ana Patricia Gonzalez",
+  "seccion": "Biometria Hematica",
+  "parametros": [
+    {"nombre": "Leucocitos", "resultado": 7.2, "unidad": "10^3/uL", "limite": "[4.5 - 10.0]"},
+    {"nombre": "Presion arterial", "resultado": 120, "unidad": "mmHg", "limite": "[90 - 140]"},
+    {"nombre": "Hemoglobina", "resultado": 15.5, "unidad": "g/dL", "limite": "[12.0 - 16.0]"}
+  ],
+  "firma": {
+    "responsable": "Q.F.B. Carlos Mendez Lopez",
+    "cedula": "12345678"
+  }
+}
