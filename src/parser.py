@@ -197,8 +197,10 @@ def validate_structure(data):
     # Validar seccion
     if not isinstance(data['seccion'], str):
         return False, "El campo 'seccion' debe ser una cadena"
-    if data['seccion'] != 'Biometria Hematica':
-        return False, f"La seccion debe ser 'Biometria Hematica', se encontro '{data['seccion']}'"
+    # Aceptar tanto con acentos como sin acentos
+    secciones_validas = ['Biometria Hematica', 'Biometría Hemática']
+    if data['seccion'] not in secciones_validas:
+        return False, f"La seccion debe ser 'Biometria Hematica' o 'Biometría Hemática', se encontro '{data['seccion']}'"
 
     # Validar parametros
     parametros = data['parametros']
