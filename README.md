@@ -60,10 +60,17 @@ pip install -r requirements.txt
 
 ```powershell
 # Windows (PowerShell)
-Get-Content .\examples\ejemplo.json -Raw | python .\src\parser.py
+Get-Content .\tests\reporte_error_formato.json -Raw | python .\src\parser.py
+Get-Content .\tests\reporte_error_semantico.json -Raw | python .\src\parser.py
+Get-Content .\tests\reporte_error_sintactico.json -Raw | python .\src\parser.py
+Get-Content .\tests\reporte_error_valido.json -Raw | python .\src\parser.py
+
 
 # Linux/Mac
-cat examples/ejemplo.json | python src/parser.py
+cat tests/reporte_error_formato.json | python src/parser.py
+cat tests/reporte_error_semantico.json | python src/parser.py
+cat tests/reporte_error_sintactico.json | python src/parser.py
+cat tests/reporte_error_valido.json | python src/parser.py
 ```
 
 ### Probar con el ejemplo incluido

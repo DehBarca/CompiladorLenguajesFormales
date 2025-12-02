@@ -16,4 +16,3 @@
     "responsable": "Q.F.B. Maria Lopez",
     "cedula": "11223344"
   }
-}
