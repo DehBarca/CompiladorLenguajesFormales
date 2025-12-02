@@ -69,7 +69,7 @@ Get-Content .\tests\reporte_error_valido.json -Raw | python .\src\parser.py
 # Linux/Mac
 cat tests/reporte_error_formato.json | python src/parser.py
 cat tests/reporte_error_semantico.json | python src/parser.py
-cat tests/reporte_error_sintactico.json | python src/parser.py
+cat tests/reporte_error_sintactico.txt | python src/parser.py
 cat tests/reporte_error_valido.json | python src/parser.py
 ```
 
