@@ -94,9 +94,7 @@ cat tests/reporte_valido.json | python src/parser.py
 cat tests/reporte_error_formato.json | python src/parser.py
 cat tests/reporte_error_semantico.json | python src/parser.py
 cat tests/reporte_error_sintactico.txt | python src/parser.py
-
-# O usando redirección (solo en bash/zsh)
-python src/parser.py < tests/reporte_valido.json
+cat tests/reporte_error_valido.json | python src/parser.py
 ```
 
 ### Probar con el ejemplo incluido
