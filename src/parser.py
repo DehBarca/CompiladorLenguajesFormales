@@ -162,7 +162,7 @@ def validate_structure(data):
     if not isinstance(data, dict):
         return False, 'La raíz no es un objeto JSON'
 
-    required_top = ['folio', 'fecha_toma', 'fecha_validacion', 'paciente', 'seccion', 'parametros', 'firma']
+    required_top = ['folio', 'fecha_toma', 'fecha_validacion', 'paciente', 'medico_solicitante', 'seccion', 'parametros', 'firma']
     for k in required_top:
         if k not in data:
             return False, f"Falta campo requerido en raíz: '{k}'"
@@ -176,6 +176,11 @@ def validate_structure(data):
         return False, "El campo 'fecha_toma' debe ser una cadena con formato 'dd/mm/yyyy HH:MM:SS'"
     if not isinstance(data['fecha_validacion'], str) or not date_time_re.match(data['fecha_validacion']):
         return False, "El campo 'fecha_validacion' debe ser una cadena con formato 'dd/mm/yyyy HH:MM:SS'"
+    
+    # Validar medico_solicitante
+    if not isinstance(data['medico_solicitante'], str):
+        return False, "El campo 'medico_solicitante' debe ser una cadena"
+    
     # Validar paciente
     paciente = data['paciente']
     if not isinstance(paciente, dict):

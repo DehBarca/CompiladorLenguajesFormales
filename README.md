@@ -1,6 +1,6 @@
 # Validador de JSON para Datos Médicos
 
-Proyecto de **Lenguajes Formales y Compiladores** que implementa un analizador léxico y sintáctico para validar archivos JSON con una estructura específica de datos de pacientes médicos.
+Proyecto de **Lenguajes Formales** que implementa un analizador léxico y sintáctico para validar archivos JSON con una estructura específica de datos de pacientes médicos.
 
 ## 📋 Descripción
 
@@ -8,7 +8,7 @@ Este proyecto utiliza **PLY (Python Lex-Yacc)** para implementar:
 - **Analizador léxico (`lexer.py`)**: Tokeniza el texto JSON en elementos básicos (llaves, comas, cadenas, números)
 - **Analizador sintáctico (`parser.py`)**: Valida la estructura JSON y verifica que cumpla con el formato requerido
 
-### Estructura JSON esperada
+### Estructura JSON esperada (Reporte de Análisis de Sangre)
 
 ```json
 {
@@ -20,6 +20,27 @@ Este proyecto utiliza **PLY (Python Lex-Yacc)** para implementar:
     "fecha_nacimiento": "25/04/1985",
     "sexo": "F",
     "edad": 35
+  },
+  "medico_solicitante": "Dr. Rafael Barbera Vazquez",
+  "seccion": "Biometria Hematica",
+  "parametros": [
+    {
+      "nombre": "Leucocitos",
+      "resultado": 5.9,
+      "unidad": "10^3/uL",
+      "limite": "[4.5 - 10.0]"
+    },
+    {
+      "nombre": "Hemoglobina",
+      "resultado": 14.2,
+      "unidad": "g/dL",
+      "limite": "[12.0 - 16.0]",
+      "nota": "+"
+    }
+  ],
+  "firma": {
+    "responsable": "Q.F.B. Alejandra Ruiz Salgado",
+    "cedula": "09874563"
   }
 }
 ```
@@ -40,37 +61,42 @@ source env/bin/activate
 
 ### 2. Instalar dependencias
 
-```powershell
-# Instalar PLY (requerido)
-pip install ply
-
-# Instalar pytest (opcional, para ejecutar tests)
-pip install pytest
-```
-
-O usando el archivo de requirements:
-
+**Opción 1: Usar requirements.txt (Recomendado)**
 ```powershell
 pip install -r requirements.txt
+```
+
+**Opción 2: Instalación manual**
+
+```powershell
+# Instalar PLY (requerido para lexer/parser)
+pip install ply
+
+# Instalar pytest (requerido para tests)
+pip install pytest
 ```
 
 ## 🚀 Uso
 
 ### Validar un archivo JSON
 
-```powershell
-# Windows (PowerShell)
-Get-Content .\tests\reporte_error_formato.json -Raw | python .\src\parser.py
-Get-Content .\tests\reporte_error_semantico.json -Raw | python .\src\parser.py
-Get-Content .\tests\reporte_error_sintactico.json -Raw | python .\src\parser.py
-Get-Content .\tests\reporte_error_valido.json -Raw | python .\src\parser.py
+``` powershell
+# Windows (PowerShell) - Usar ruta completa al entorno virtual
+Get-Content .\tests\reporte_valido.json -Raw | .\env\Scripts\python .\src\parser.py
+Get-Content .\tests\reporte_error_formato.json -Raw | .\env\Scripts\python .\src\parser.py
+Get-Content .\tests\reporte_error_semantico.json -Raw | .\env\Scripts\python .\src\parser.py
+Get-Content .\tests\reporte_error_sintactico.txt -Raw | .\env\Scripts\python .\src\parser.py
+```
 
-
-# Linux/Mac
+```bash
+# Linux/Mac (Bash)
+cat tests/reporte_valido.json | python src/parser.py
 cat tests/reporte_error_formato.json | python src/parser.py
 cat tests/reporte_error_semantico.json | python src/parser.py
-cat tests/reporte_error_sintactico.json | python src/parser.py
-cat tests/reporte_error_valido.json | python src/parser.py
+cat tests/reporte_error_sintactico.txt | python src/parser.py
+
+# O usando redirección (solo en bash/zsh)
+python src/parser.py < tests/reporte_valido.json
 ```
 
 ### Probar con el ejemplo incluido
@@ -97,6 +123,66 @@ VALID: objeto parseado correctamente
 **JSON inválido:**
 ```
 INVALID: Error de validación: Falta campo requerido en raíz: 'folio'
+```
+
+## ⚡ Comandos Rápidos
+
+### Validación Rápida
+
+```powershell
+# Probar con archivos de ejemplo incluidos (PowerShell)
+Get-Content .\tests\reporte_valido.json -Raw | .\env\Scripts\python .\src\parser.py
+Get-Content .\tests\reporte_error_formato.json -Raw | .\env\Scripts\python .\src\parser.py
+Get-Content .\tests\reporte_error_semantico.json -Raw | .\env\Scripts\python .\src\parser.py
+Get-Content .\tests\reporte_error_sintactico.txt -Raw | .\env\Scripts\python .\src\parser.py
+
+# Alternativa con variable (más legible para comandos largos)
+$content = Get-Content .\tests\reporte_valido.json -Raw; $content | .\env\Scripts\python .\src\parser.py
+```
+
+### Ejecutar Script de Ejemplos
+
+```powershell
+# Ejecutar todos los ejemplos de una vez
+.\env\Scripts\python .\scripts\run_examples.py
+
+# Ejecutar ejemplos con más detalle
+.\env\Scripts\python .\scripts\run_examples2.py
+```
+
+### Tests y Desarrollo
+
+```powershell
+# Ejecutar todos los tests (recomendado)
+pytest tests\ -v
+
+# Tests con cobertura
+pytest tests\ --cov=src --cov-report=html
+
+# Tests rápidos (sin verbose)
+pytest tests\ -q
+
+# Solo tests del lexer
+pytest tests\test_lexer.py -v
+
+# Solo tests del parser  
+pytest tests\test_parser.py -v
+```
+
+### Limpieza y Mantenimiento
+
+```powershell
+# Limpiar archivos generados por PLY
+Remove-Item src\parser.out, src\parsetab.py -ErrorAction SilentlyContinue
+
+# Limpiar cache de Python
+Get-ChildItem -Recurse -Name __pycache__ | Remove-Item -Recurse -Force
+
+# Limpiar cache de pytest
+Remove-Item .pytest_cache -Recurse -Force -ErrorAction SilentlyContinue
+
+# Regenerar archivos PLY (tras cambios en gramática)
+.\env\Scripts\python -c "import sys; sys.path.append('src'); from parser import parse_text; print('Parser regenerado')"
 ```
 
 ## 📚 Componentes del Proyecto
@@ -180,9 +266,9 @@ else:
 
 ## 🧪 Tests
 
-El proyecto incluye **26 tests automatizados** usando pytest que verifican:
-- ✅ Tokenización correcta del lexer (11 tests)
-- ✅ Validación sintáctica del parser (15 tests)
+El proyecto incluye **36 tests automatizados** usando pytest que verifican:
+- ✅ Tokenización correcta del lexer (13 tests)
+- ✅ Validación sintáctica y semántica del parser (23 tests)
 - ✅ Manejo de errores y casos límite
 - ✅ Preservación de caracteres UTF-8 (acentos, ñ, etc.)
 
@@ -192,7 +278,7 @@ El proyecto incluye **26 tests automatizados** usando pytest que verifican:
 # Con entorno virtual activado
 pytest tests/ -v
 
-# Sin activar entorno (Windows)
+# Alternativa usando el Python del entorno virtual (Windows)
 .\env\Scripts\python -m pytest tests/ -v
 ```
 
@@ -206,7 +292,7 @@ pytest tests/test_lexer.py -v
 pytest tests/test_parser.py -v
 
 # Test específico
-pytest tests/test_parser.py::TestParser::test_valid_complete_json -v
+pytest tests/test_parser.py::TestParser::test_valid_complete_blood_analysis -v
 ```
 
 ### Cobertura de tests
@@ -219,14 +305,14 @@ pip install pytest-cov
 pytest tests/ --cov=src --cov-report=html
 ```
 
-**Resultado esperado:**
+**Resultado esperado (ejemplo):**
 ```
 tests/test_lexer.py::TestLexer::test_empty_object PASSED            [  3%]
 tests/test_lexer.py::TestLexer::test_simple_pair PASSED             [  7%]
 ...
-tests/test_parser.py::TestParser::test_valid_complete_json PASSED   [ 46%]
+tests/test_parser.py::TestParser::test_valid_complete_blood_analysis PASSED   [ 46%]
 ...
-========================= 26 passed in 0.08s =========================
+========================= 36 passed in 0.08s =========================
 ```
 
 ## 📁 Estructura del Proyecto
@@ -234,26 +320,72 @@ tests/test_parser.py::TestParser::test_valid_complete_json PASSED   [ 46%]
 ```
 CompiladorLenguajesFormales/
 │
-├── src/                     # Código fuente
-│   ├── lexer.py            # Analizador léxico
-│   └── parser.py           # Analizador sintáctico
+├── src/                     # Código fuente principal
+│   ├── lexer.py            # Analizador léxico (tokenización)
+│   ├── parser.py           # Analizador sintáctico (validación)
+│   ├── main.py             # Punto de entrada alternativo
+│   ├── parser.out          # Tabla LALR generada por PLY
+│   └── parsetab.py         # Cache del parser PLY
 │
-├── tests/                   # Tests unitarios
-│   ├── test_lexer.py       # Tests del lexer
-│   └── test_parser.py      # Tests del parser
+├── tests/                   # Tests y ejemplos de validación
+│   ├── test_lexer.py       # 13 tests del analizador léxico
+│   ├── test_parser.py      # 23 tests del analizador sintáctico
+│   ├── reporte_valido.json # Ejemplo válido completo
+│   ├── reporte_error_formato.json    # Error formato límites
+│   ├── reporte_error_semantico.json  # Error parámetro inválido
+│   └── reporte_error_sintactico.txt  # Error JSON incompleto
 │
-├── examples/                # Archivos de ejemplo
-│   └── ejemplo.json        # JSON válido de ejemplo
+├── scripts/                 # Scripts de utilidad
+│   ├── run_examples.py     # Ejecuta ejemplos básicos
+│   └── run_examples2.py    # Ejecuta ejemplos extendidos
 │
-├── env/                     # Entorno virtual 
-├── .pytest_cache/           # Cache de pytest 
-├── __pycache__/             # Cache de Python 
-├── parser.out               # Tabla LALR de PLY 
-├── parsetab.py              # Cache del parser PLY 
+├── env/                     # Entorno virtual Python
+├── .pytest_cache/           # Cache de pytest (generado)
+├── __pycache__/             # Cache de Python (generado)
 │
-├── .gitignore
-├── requirements.txt
-└── README.md                # Documentación
+├── .git/                    # Control de versiones Git
+├── .gitignore              # Archivos ignorados por Git
+├── requirements.txt        # Dependencias Python
+└── README.md               # Documentación (este archivo)
+```
+
+### Archivos Importantes
+
+- **`src/parser.py`**: Archivo principal. Contiene la lógica de validación.
+- **`tests/reporte_*.json`**: Casos de prueba reales para validar funcionalidad.
+- **`requirements.txt`**: Lista exacta de dependencias con versiones.
+- **`.gitignore`**: Excluye archivos generados (cache, entorno virtual).
+
+## 🛠️ Troubleshooting / Solución de Problemas
+
+### Errores Comunes
+
+**Error: "No module named 'ply'"**
+```powershell
+# Solución: Instalar PLY
+pip install ply
+# o
+pip install -r requirements.txt
+```
+
+**Error: "Generating LALR tables" (primera ejecución)**
+- Es normal. PLY genera las tablas la primera vez.
+- Los archivos `parser.out` y `parsetab.py` se crean automáticamente.
+
+**Error: "Error de sintaxis: Error de sintaxis"**
+- Verificar que el JSON esté bien formado (llaves, comas, etc.)
+- Usar un validador JSON online para verificar sintaxis básica.
+
+**Error: "Falta campo requerido en raíz"**
+- Asegurarse de que el JSON incluya TODOS los campos:
+  - `folio`, `fecha_toma`, `fecha_validacion`, `paciente`
+  - `medico_solicitante`, `seccion`, `parametros`, `firma`
+
+**Tests fallan con "ModuleNotFoundError"**
+```powershell
+# Ejecutar desde la raíz del proyecto
+cd C:\ruta\al\proyecto\CompiladorLenguajesFormales
+pytest tests\ -v
 ```
 
 ## 🔍 Notas Técnicas
@@ -263,7 +395,7 @@ CompiladorLenguajesFormales/
 3. **Manejo de errores**: El parser captura errores de sintaxis y validación, mostrando mensajes descriptivos
 4. **Formato de fechas**: Las fechas se validan solo por formato (regex), no por validez semántica
 5. **UTF-8**: Los caracteres con acentos y ñ se preservan correctamente
-6. **Tests**: 26 tests automatizados con 100% de éxito verifican el funcionamiento completo
+6. **Tests**: 36 tests automatizados con 100% de éxito verifican el funcionamiento completo
 
 ## 👥 Autores
 

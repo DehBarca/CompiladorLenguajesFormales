@@ -27,6 +27,7 @@ class TestParser:
                 "sexo": "F",
                 "edad": 35
             },
+            "medico_solicitante": "Dr. Test",
             "seccion": "Biometria Hematica",
             "parametros": [
                 {"nombre": "Leucocitos", "resultado": 5.9, "unidad": "10^3/uL", "limite": "[4.5 - 10.0]"},
@@ -55,6 +56,7 @@ class TestParser:
             "fecha_toma": "14/06/2020 07:51:57",
             "fecha_validacion": "14/06/2020 17:08:05",
             "paciente": {"nombre": "Test", "fecha_nacimiento": "25/04/1985", "sexo": "F", "edad": 35},
+            "medico_solicitante": "Dr. Test",
             "seccion": "Biometria Hematica",
             "parametros": [{"nombre": "Leucocitos", "resultado": 5.9, "unidad": "10^3/uL", "limite": "[4.5 - 10.0]"}],
             "firma": {"responsable": "Dr. Test", "cedula": "12345678"}
@@ -70,6 +72,7 @@ class TestParser:
             "fecha_toma": "14/06/2020 07:51:57",
             "fecha_validacion": "14/06/2020 17:08:05",
             "paciente": {"nombre": "Test", "fecha_nacimiento": "25/04/1985", "sexo": "F", "edad": 35},
+            "medico_solicitante": "Dr. Test",
             "parametros": [{"nombre": "Leucocitos", "resultado": 5.9, "unidad": "10^3/uL", "limite": "[4.5 - 10.0]"}],
             "firma": {"responsable": "Dr. Test", "cedula": "12345678"}
         }'''
@@ -84,6 +87,7 @@ class TestParser:
             "fecha_toma": "14/06/2020 07:51:57",
             "fecha_validacion": "14/06/2020 17:08:05",
             "paciente": {"nombre": "Test", "fecha_nacimiento": "25/04/1985", "sexo": "F", "edad": 35},
+            "medico_solicitante": "Dr. Test",
             "seccion": "Biometria Hematica",
             "firma": {"responsable": "Dr. Test", "cedula": "12345678"}
         }'''
@@ -102,6 +106,7 @@ class TestParser:
                 "sexo": "F",
                 "edad": 35
             },
+            "medico_solicitante": "Dr. Test",
             "seccion": "HEMATOLOGÍA",
             "parametros": [
                 {
@@ -132,6 +137,7 @@ class TestParser:
                 "sexo": "F",
                 "edad": 35
             },
+            "medico_solicitante": "Dr. Test",
             "seccion": "HEMATOLOGÍA",
             "parametros": [
                 {
@@ -162,6 +168,7 @@ class TestParser:
                 "sexo": "F",
                 "edad": 35
             },
+            "medico_solicitante": "Dr. Test",
             "seccion": "HEMATOLOGÍA",
             "parametros": [
                 {
@@ -192,6 +199,7 @@ class TestParser:
                 "sexo": "F",
                 "edad": 35
             },
+            "medico_solicitante": "Dr. Test",
             "seccion": "HEMATOLOGÍA",
             "parametros": [
                 {
@@ -222,6 +230,7 @@ class TestParser:
                 "sexo": "F",
                 "edad": "35"
             },
+            "medico_solicitante": "Dr. Test",
             "seccion": "HEMATOLOGÍA",
             "parametros": [
                 {
@@ -283,6 +292,7 @@ class TestParser:
                 "sexo": "M",
                 "edad": 30
             },
+            "medico_solicitante": "Dr. Test",
             "seccion": "Biometría Hemática",
             "parametros": [
                 {
@@ -309,6 +319,7 @@ class TestParser:
             "fecha_toma": "01/01/2021 08:00:00",
             "fecha_validacion": "01/01/2021 10:00:00",
             "paciente": {"nombre": "Test", "fecha_nacimiento": "01/01/1990", "sexo": "M", "edad": 30},
+            "medico_solicitante": "Dr. Test",
             "seccion": "Biometria Hematica",
             "parametros": [{"nombre": "Glucosa", "resultado": 90, "unidad": "mg/dL", "limite": "[70 - 100]"}],
             "firma": {"responsable": "Dr. X", "cedula": "12345678"}
@@ -324,6 +335,7 @@ class TestParser:
             "fecha_toma": "02/02/2022 09:10:10",
             "fecha_validacion": "02/02/2022 12:00:00",
             "paciente": {"nombre": "Test2", "fecha_nacimiento": "02/02/1980", "sexo": "F", "edad": 45},
+            "medico_solicitante": "Dr. Test",
             "seccion": "Biometria Hematica",
             "parametros": [{"nombre": "Leucocitos", "resultado": 6.1, "unidad": "10^3/uL", "limite": "4.5-10.0"}],
             "firma": {"responsable": "Dr. Y", "cedula": "87654321"}
@@ -339,6 +351,7 @@ class TestParser:
             "fecha_toma": "03/03/2023 07:00:00",
             "fecha_validacion": "03/03/2023 08:00:00",
             "paciente": {"nombre": "Test3", "fecha_nacimiento": "03/03/1975", "sexo": "M", "edad": 50},
+            "medico_solicitante": "Dr. Test",
             "seccion": "Biometria Hematica",
             "parametros": [{"nombre": "Plaquetas", "resultado": 200, "unidad": "10^3/uL", "limite": "[150 - 400]"}],
             "firma": {"responsable": "Dr. Z"}
@@ -354,6 +367,7 @@ class TestParser:
             "fecha_toma": "04/04/2024 06:30:00",
             "fecha_validacion": "04/04/2024 09:00:00",
             "paciente": {"nombre": "Test4", "fecha_nacimiento": "04/04/2000", "sexo": "F", "edad": 25},
+            "medico_solicitante": "Dr. Test",
             "seccion": "Biometria Hematica",
             "parametros": [{"nombre": "Hemoglobina", "resultado": "catorce", "unidad": "g/dL", "limite": "[12.0 - 16.0]"}],
             "firma": {"responsable": "Dr. A", "cedula": "11223344"}
@@ -369,6 +383,7 @@ class TestParser:
             "fecha_toma": "05/05/2024 08:00:00",
             "fecha_validacion": "05/05/2024 10:00:00",
             "paciente": {"nombre": "Test5", "fecha_nacimiento": "05/05/1995", "sexo": "M", "edad": 29},
+            "medico_solicitante": "Dr. Test",
             "seccion": "Biometria Hematica",
             "parametros": [],
             "firma": {"responsable": "Dr. B", "cedula": "22334455"}
@@ -384,6 +399,7 @@ class TestParser:
             "fecha_toma": "06/06/2024 09:00:00",
             "fecha_validacion": "06/06/2024 11:00:00",
             "paciente": {"nombre": "Test6", "fecha_nacimiento": "06/06/1990", "sexo": "F", "edad": 34},
+            "medico_solicitante": "Dr. Test",
             "seccion": "Biometria Hematica",
             "parametros": [{"nombre": "Eritrocitos", "resultado": 4.5, "unidad": "10^6/uL", "limite": "[4.3 - 5.8]"}],
             "firma": {"responsable": "Dr. C", "cedula": "33445566"}
@@ -399,6 +415,7 @@ class TestParser:
             "fecha_toma": "07/07/2024 10:00:00",
             "fecha_validacion": "07/07/2024 12:00:00",
             "paciente": {"nombre": "Test7", "fecha_nacimiento": "07/07/1985", "sexo": "M", "edad": 39},
+            "medico_solicitante": "Dr. Test",
             "seccion": "Biometria Hematica",
             "parametros": [{"nombre": "Leucocitos", "resultado": 7.0, "unidad": "10^3/uL", "limite": "[4.5 - 10.0]"}],
             "firma": {"responsable": "Dr. D", "cedula": "123"}
@@ -414,6 +431,7 @@ class TestParser:
             "fecha_toma": "08/08/2024 11:00:00",
             "fecha_validacion": "08/08/2024 13:00:00",
             "paciente": {"nombre": "Test8", "fecha_nacimiento": "08/08/1992", "sexo": "F", "edad": 32},
+            "medico_solicitante": "Dr. Test",
             "seccion": "Biometria Hematica",
             "parametros": [
                 {"nombre": "Plaquetas", "resultado": 350, "unidad": "10^3/uL", "limite": "[150 - 400]", "nota": "*"},
@@ -433,6 +451,7 @@ class TestParser:
             "fecha_toma": "09/09/2024 12:00:00",
             "fecha_validacion": "09/09/2024 14:00:00",
             "paciente": {"nombre": "Test9", "fecha_nacimiento": "09/09/1988", "sexo": "M", "edad": 36},
+            "medico_solicitante": "Dr. Test",
             "seccion": "Biometria Hematica",
             "parametros": [{"nombre": "Hemoglobina", "resultado": 15.0, "unidad": "g/dL", "limite": "[12.0 - 16.0]", "nota": "X"}],
             "firma": {"responsable": "Dr. F", "cedula": "55667788"}
